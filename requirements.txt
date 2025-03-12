@@ -1,0 +1,6 @@
+selenium
+requests
+pycryptodome
+pillow
+jinja2
+pyyaml

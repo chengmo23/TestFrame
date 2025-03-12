@@ -1,0 +1,38 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "产品1",
+      "price": 99.99,
+      "description": "这是产品1的描述",
+      "category": "类别1"
+    },
+    {
+      "id": "2",
+      "name": "产品2",
+      "price": 199.99,
+      "description": "这是产品2的描述",
+      "category": "类别2"
+    },
+    {
+      "id": "3",
+      "name": "产品3",
+      "price": 299.99,
+      "description": "这是产品3的描述",
+      "category": "类别1"
+    }
+  ],
+  "new_product": {
+    "name": "新产品",
+    "price": 399.99,
+    "description": "这是一个新产品",
+    "category": "新类别"
+  },
+  "update_product": {
+    "id": "1",
+    "name": "更新后的产品1",
+    "price": 129.99,
+    "description": "这是更新后的产品1描述",
+    "category": "更新后的类别"
+  }
+}

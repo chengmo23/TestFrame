@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        .summary {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .summary-item {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px;
+            margin: 5px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .total {
+            background-color: #e9ecef;
+        }
+        .passed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .failed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .skipped {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .pass-rate {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+        .duration {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        .status-pass {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-fail {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .status-skip {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .details {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ title }}</h1>
+            <p>生成时间: {{ generated_time }}</p>
+        </div>
+        
+        <div class="summary">
+            <div class="summary-item total">
+                <h3>总用例数</h3>
+                <p>{{ summary.total }}</p>
+            </div>
+            <div class="summary-item passed">
+                <h3>通过</h3>
+                <p>{{ summary.passed }}</p>
+            </div>
+            <div class="summary-item failed">
+                <h3>失败</h3>
+                <p>{{ summary.failed }}</p>
+            </div>
+            <div class="summary-item skipped">
+                <h3>跳过</h3>
+                <p>{{ summary.skipped }}</p>
+            </div>
+            <div class="summary-item pass-rate">
+                <h3>通过率</h3>
+                <p>{{ summary.pass_rate }}</p>
+            </div>
+            <div class="summary-item duration">
+                <h3>总耗时</h3>
+                <p>{{ summary.duration }}秒</p>
+            </div>
+        </div>
+        
+        <h2>测试结果详情</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>测试用例</th>
+                    <th>状态</th>
+                    <th>耗时(秒)</th>
+                    <th>详情</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ result.name }}</td>
+                    <td>
+                        <span class="status status-{{ result.status|lower }}">{{ result.status }}</span>
+                    </td>
+                    <td>{{ result.duration }}</td>
+                    <td>
+                        {% if result.message %}
+                        <details>
+                            <summary>查看详情</summary>
+                            <div class="details">{{ result.message }}</div>
+                        </details>
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="footer">
+            <p>TestFrame 自动化测试框架 - {{ generated_time }}</p>
+        </div>
+    </div>
+</body>
+</html>
