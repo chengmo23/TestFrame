@@ -62,7 +62,7 @@ def get_log_file():
 
 def get_log_max_size():
     """获取日志文件最大大小"""
-    return _config.getint('log', 'max_size')
+    return _config.get('log', 'max_size')
 
 def get_log_backup_count():
     """获取日志文件备份数量"""

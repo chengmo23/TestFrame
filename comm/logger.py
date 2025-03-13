@@ -7,68 +7,60 @@
 """
 
 import os
-import logging
-from logging.handlers import RotatingFileHandler
+import sys
+from loguru import logger
 from conf import config
 
-# 全局日志对象
-logger = None
 
 def init():
     """初始化日志"""
-    global logger
-    
-    # 创建日志对象
-    logger = logging.getLogger('test-frame')
-    
-    # 设置日志级别
-    level = getattr(logging, config.get_log_level().upper())
-    logger.setLevel(level)
-    
-    # 创建日志格式
-    formatter = logging.Formatter(config.get_log_format())
-    
-    # 创建控制台处理器
-    console_handler = logging.StreamHandler()
-    console_handler.setFormatter(formatter)
-    logger.addHandler(console_handler)
-    
-    # 创建文件处理器
+    # 移除默认处理器
+    logger.remove()
+
+    # 创建文件处理器, 按大小滚动归档, 保留最近10个日志文件
     log_file = config.get_log_file()
     log_dir = os.path.dirname(log_file)
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
-        
-    file_handler = RotatingFileHandler(
+
+    logger.add(
         log_file,
-        maxBytes=config.get_log_max_size(),
-        backupCount=config.get_log_backup_count(),
-        encoding='utf-8'
+        rotation=config.get_log_max_size(),
+        retention=config.get_log_backup_count(),
+        level=config.get_log_level(),
+        format=config.get_log_format(),
+        encoding="utf-8",
     )
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
+
+    # 配置控制台输出，调试时显示DEBUG级别信息
+    logger.add(
+        sys.stderr,
+        level="DEBUG",
+        format=config.get_log_format(),
+    )
+
 
 def debug(message):
     """记录调试日志"""
-    if logger:
-        logger.debug(message)
+    logger.debug(message)
+
 
 def info(message):
     """记录信息日志"""
-    if logger:
-        logger.info(message)
+    logger.info(message)
+
 
 def warning(message):
     """记录警告日志"""
-    if logger:
-        logger.warning(message)
+    logger.warning(message)
+
 
 def error(message):
     """记录错误日志"""
-    if logger:
-        logger.error(message)
+    logger.error(message)
+
 
 def critical(message):
     """记录严重错误日志"""
-    if logger:
-        logger.critical(message)
+    logger.critical(message)
+
